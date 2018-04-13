@@ -1,4 +1,58 @@
 package practice11;
 
-public class Teacher {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Teacher extends Person{
+    private HashSet<Klass> classes = new HashSet<>();
+    private final String JOB_INTRODUCE = " I am a Teacher.";
+    public Teacher(int id,String name,int age,HashSet<Klass> classes){
+        super(id,name,age);
+        this.classes = classes;
+        classes.forEach(klass -> klass.addTeacher(this));
+    }
+    public Teacher(int id,String name,int age){
+        super(id,name,age);
+    }
+    private String myClassesName() {
+        List<Integer> name_list = new ArrayList<Integer>();
+        StringBuilder sb = new StringBuilder("Class ");
+        this.classes.forEach(klass -> name_list.add(new Integer(klass.getNumber())));
+        name_list.stream().sorted().forEach(klass->sb.append(klass+", "));
+        return sb.substring(0, sb.length() - 2);
+    }
+    public String introduce(){
+        if(this.classes==null || getClasses().size()==0){
+            return super.introduce()+JOB_INTRODUCE+" I teach No Class.";
+        }
+        return super.introduce()+JOB_INTRODUCE+" I teach "+ this.myClassesName() +".";
+
+    }
+
+    public String introduceWith(Student st) {
+        if(isTeaching(st)){
+            return super.introduce()+JOB_INTRODUCE+" I teach "+st.getName()+".";
+        }
+        return super.introduce()+JOB_INTRODUCE+" I don't teach "+st.getName()+".";
+    }
+    public boolean isTeaching(Student student){
+        return this.classes.stream().filter(klass -> klass.isIn(student)).collect(Collectors.toSet()).size() > 0;
+    }
+
+    public HashSet<Klass> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(HashSet<Klass> classes) {
+        this.classes = classes;
+    }
+    public void knowAboutJoin(Student student, Klass klass) {
+        System.out.print("I am " + this.getName() + ". I know " + student.getName() + " has joined " + klass.getDisplayName() + ".\n");
+    }
+
+    public void knowAboutLeader(Student student, Klass klass) {
+        System.out.print("I am " + this.getName() + ". I know " + student.getName() + " become Leader of " + klass.getDisplayName() + ".\n");
+    }
 }
