@@ -1,8 +1,7 @@
 package practice11;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Teacher extends Person{
@@ -17,10 +16,8 @@ public class Teacher extends Person{
         super(id,name,age);
     }
     private String myClassesName() {
-        List<Integer> name_list = new ArrayList<Integer>();
         StringBuilder sb = new StringBuilder("Class ");
-        this.classes.forEach(klass -> name_list.add(new Integer(klass.getNumber())));
-        name_list.stream().sorted().forEach(klass->sb.append(klass+", "));
+        this.classes.stream().sorted(Comparator.comparingInt(Klass::getNumber)).forEach(klass -> sb.append(klass.getNumber() + ", "));
         return sb.substring(0, sb.length() - 2);
     }
     public String introduce(){

@@ -1,5 +1,6 @@
 package practice10;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public class Teacher extends Person{
     }
     private String myClassesName() {
         StringBuilder sb = new StringBuilder("Class ");
-        this.classes.forEach(klass -> sb.append(klass.getNumber() + ", "));
+        this.classes.stream().sorted(Comparator.comparingInt(Klass::getNumber)).forEach(klass -> sb.append(klass.getNumber() + ", "));
         return sb.substring(0, sb.length() - 2);
     }
     public String introduce(){
